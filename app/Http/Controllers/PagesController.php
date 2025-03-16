@@ -15,19 +15,19 @@ class PagesController extends Controller
         $tot_posts = count(Post::all());
 
         $posts = Post::where('status', 'LIKE', 'Published')
-                        ->orderBy('created_at', 'desc')
-                        ->limit(3)
-                        ->get();
+            ->orderBy('created_at', 'desc')
+            ->limit(3)
+            ->get();
 
         $events = Event::where('start_date', '>=', date('Y-m-d'))
-                        ->orWhere('end_date', '<=', date('Y-m-d'))
-                        ->limit(4)
-                        ->orderBy('start_date')
-                        ->get();
+            ->orWhere('end_date', '<=', date('Y-m-d'))
+            ->limit(4)
+            ->orderBy('start_date', 'desc')
+            ->get();
 
         $annoucement = Setting::where('name', 'LIKE', 'Annoucement')->get();
 
-        if(count($annoucement) > 0)
+        if (count($annoucement) > 0)
             $annoucement = $annoucement[0]->value;
         else
             $annoucement = null;
@@ -47,13 +47,13 @@ class PagesController extends Controller
         $tot_posts = count(Post::all());
 
         $latest_post = Post::where('status', 'LIKE', 'Published')
-                            ->orderBy('created_at', 'desc')
-                            ->limit(1)
-                            ->get();
+            ->orderBy('created_at', 'desc')
+            ->limit(1)
+            ->get();
 
         $posts = Post::where('status', 'LIKE', 'Published')
-                        ->orderBy('created_at', 'desc')
-                        ->paginate(15);
+            ->orderBy('created_at', 'desc')
+            ->paginate(15);
 
         return view('pages.news')->with(compact('latest_post', 'posts', 'tot_posts'));
     }
